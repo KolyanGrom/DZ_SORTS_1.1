@@ -10,6 +10,8 @@ public class AviaSoulsTest {
     Ticket ticket2 = new Ticket("Москва", "Тюмень", 6_500, 20, 24);
     Ticket ticket3 = new Ticket("Москва", "Хабаровск", 14_500, 22, 9);
     Ticket ticket4 = new Ticket("Москва", "Хабаровск", 11_500, 5, 14);
+    Ticket ticket5 = new Ticket("Москва", "Хабаровск", 15_500, 7, 20);
+
     AviaSouls manager = new AviaSouls();
 
     @BeforeEach
@@ -44,6 +46,31 @@ public class AviaSoulsTest {
 
         Ticket[] expected = {ticket4, ticket3};
         Ticket[] actual = manager.searchAndSortBy("Москва", "Хабаровск", comparator);
+
+        Assertions.assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    public void testSearchNoneTicket() {
+        Ticket[] expected = {};
+        Ticket[] actual = manager.search("Сочи", "Краснодар");
+
+        Assertions.assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    public void testSearchOneTicket() {
+        Ticket[] expected = {ticket2};
+        Ticket[] actual = manager.search("Москва", "Тюмень");
+
+        Assertions.assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    public void testSearchSeveralTicket() {
+        manager.add(ticket5);
+        Ticket[] expected = {ticket4, ticket3, ticket5};
+        Ticket[] actual = manager.search("Москва", "Хабаровск");
 
         Assertions.assertArrayEquals(expected, actual);
     }
